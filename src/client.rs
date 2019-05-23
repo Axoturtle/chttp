@@ -187,8 +187,8 @@ impl Client {
     ///
     /// The response body is provided as a stream that may only be consumed once.
     #[cfg(feature = "async-api")]
-    pub async fn send_async<B: Into<Body>>(&self, request: Request<B>) -> Result<Response<Body>, Error> {
-        await!(self.send_async_impl(request))
+    pub async fn send_async<B: Into<Body> + 'static>(&self, request: Request<B>) -> Result<Response<Body>, Error> {
+        self.send_async_impl(request).await
     }
 
     async fn send_async_impl<B: Into<Body> + 'static>(&self, request: Request<B>) -> Result<Response<Body>, Error> {
