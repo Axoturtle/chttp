@@ -146,6 +146,8 @@
 //! [libcurl]: https://curl.haxx.se/libcurl/
 //! [log]: https://docs.rs/log
 
+#![feature(async_await)]
+
 pub mod body;
 pub mod client;
 pub mod error;
@@ -192,14 +194,14 @@ pub fn head<U>(uri: U) -> Result<Response, Error> where http::Uri: http::HttpTry
 /// Sends an HTTP POST request.
 ///
 /// The response body is provided as a stream that may only be consumed once.
-pub fn post<U>(uri: U, body: impl Into<Body>) -> Result<Response, Error> where http::Uri: http::HttpTryFrom<U> {
+pub fn post<U>(uri: U, body: impl Into<Body> + 'static) -> Result<Response, Error> where http::Uri: http::HttpTryFrom<U> {
     client::global().post(uri, body)
 }
 
 /// Sends an HTTP PUT request.
 ///
 /// The response body is provided as a stream that may only be consumed once.
-pub fn put<U>(uri: U, body: impl Into<Body>) -> Result<Response, Error> where http::Uri: http::HttpTryFrom<U> {
+pub fn put<U>(uri: U, body: impl Into<Body> + 'static) -> Result<Response, Error> where http::Uri: http::HttpTryFrom<U> {
     client::global().put(uri, body)
 }
 
